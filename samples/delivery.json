@@ -1,0 +1,68 @@
+{
+  "batch_id": "sample-delivery",
+  "tables": {
+    "campuses": [
+      {
+        "campus_id": "park1",
+        "timezone": "Europe/Berlin",
+        "label": "文化园区"
+      }
+    ],
+    "meters": [
+      {
+        "meter_id": "m1",
+        "modulus": "10000",
+        "unit": "kWh"
+      },
+      {
+        "meter_id": "m2",
+        "modulus": "0",
+        "unit": "kWh"
+      }
+    ],
+    "readings": [
+      {
+        "reading_id": "r1",
+        "meter_id": "m1",
+        "observed_at": "2026-10-24T03:00:00Z",
+        "value": "120",
+        "received_at": "2026-10-24T03:01:00Z"
+      },
+      {
+        "reading_id": "r2",
+        "meter_id": "m1",
+        "observed_at": "2026-10-25T05:00:00Z",
+        "value": "146",
+        "received_at": "2026-10-25T05:01:00Z"
+      }
+    ],
+    "placements": [
+      {
+        "placement_id": "p1",
+        "meter_id": "m1",
+        "campus_id": "park1",
+        "building": "hall-a",
+        "valid_from": "2026-01-01T00:00:00Z",
+        "valid_to": "2026-10-25T12:00:00Z"
+      },
+      {
+        "placement_id": "p2",
+        "meter_id": "m1",
+        "campus_id": "park1",
+        "building": "hall-b",
+        "valid_from": "2026-10-25T12:00:00Z",
+        "valid_to": "2027-01-01T00:00:00Z"
+      }
+    ],
+    "handovers": [
+      {
+        "handover_id": "h1",
+        "old_meter": "m1",
+        "new_meter": "m2",
+        "occurred_at": "2026-11-01T00:00:00Z",
+        "old_value": "180",
+        "new_value": "0"
+      }
+    ]
+  }
+}
