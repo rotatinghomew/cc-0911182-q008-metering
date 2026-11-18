@@ -8,6 +8,8 @@
 
 `health.inspect` 保存当前计量异常供运维核对，包括读数回退、重复时间及区间起点缺少归属，不对未核明的间隔自动补用量。
 
+`warehouse.facts.daily_facts` 由当前业务表推导营业日用能事实，供园区日结对接。营业日从园区当地 06:00 开始，使用园区时区，夏令时过渡日按真实长短（23/25 小时）处理，不假设固定二十四小时。没有更细观测时，已知区间的消耗按实际经过秒数分配到覆盖的营业日，事实行区分观测与分配份额。换表与回零以交接档案为界截断读数区间（回零即新旧表相同的交接），量程翻转按表计量程折算；除此之外的负差值保留为缺口，不按猜测补量。归属沿交接有效区间切分，白天移交另一栋楼的表计当日即分楼记账，不整日跟随最新档案。事实随查随算、不写回仓库：补录中间读数后重算即替换原先估分，且每个区间的份额之和恒等于区间消耗，总量始终可核回原始区间。覆盖核对按园区营业日给出期望与实际覆盖秒数：只有完整覆盖的营业日可供计费采用；不完整区间带原因列出并标明影响园区，缺口不会被当作节能。
+
 ## 使用
 
 运行时支持 Python 3.11.x，独立容器使用摘要固定的 Python 3.11 镜像。`requirements.txt` 精确锁定依赖版本，`requirements.lock` 保存相同版本的 Linux CPython 3.11 wheel 哈希，容器构建时校验哈希。推荐使用下列容器方式；镜像构建时准备依赖，之后运行不联网。镜像只包含本仓库应用及依赖，不启动额外服务。
@@ -24,6 +26,7 @@ python -m unittest discover -s tests -v
 python -m compileall -q warehouse tests
 python -m warehouse.cli --database /tmp/metering.duckdb load samples/delivery.json
 python -m warehouse.cli --database /tmp/metering.duckdb overview
+python -m warehouse.cli --database /tmp/metering.duckdb facts
 python -m warehouse.cli --database /tmp/metering.duckdb export /tmp/metering-exports release1
 ```
 

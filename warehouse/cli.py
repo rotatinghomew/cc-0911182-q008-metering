@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 from .export import export_tables
+from .facts import daily_facts
 from .ingest import ingest
 from .queries import overview
 from .storage import open_store
@@ -15,6 +16,7 @@ def main():
     load = commands.add_parser('load', help='接收一个业务包')
     load.add_argument('file', type=Path)
     commands.add_parser('overview', help='查看现有业务汇总')
+    commands.add_parser('facts', help='营业日用能事实与覆盖核对')
     output = commands.add_parser('export', help='冻结列式导出')
     output.add_argument('destination', type=Path)
     output.add_argument('revision')
@@ -23,6 +25,8 @@ def main():
     try:
         if args.action == 'load':
             result = ingest(connection, json.loads(args.file.read_text(encoding='utf-8')))
+        elif args.action == 'facts':
+            result = daily_facts(connection)
         elif args.action == 'export':
             result = export_tables(connection, args.destination, args.revision)
         else:
